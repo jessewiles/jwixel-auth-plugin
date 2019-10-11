@@ -30,6 +30,15 @@ final class BasicAuthHandler {
 
                 String username = null;
 
+                /*
+                 * TODO: Search for these values in an ES index.
+                 * Java search API
+                    * https://www.elastic.co/guide/en/elasticsearch/client/java-api/current/java-search.html
+                 * CreateIndex helper
+                    * https://github.com/elastic/elasticsearch/blob/master/server/src/main/java/org/elasticsearch/action/admin/indices/create/CreateIndexRequest.java
+                 * Foundation class for making calls into elasitc:
+                    * https://github.com/elastic/elasticsearch/blob/master/server/src/main/java/org/elasticsearch/client/Client.java
+                 * */
                 if (firstColonIndex > 0) {
                     username = header.substring(0, firstColonIndex);
                     if (username.equals("jwixel")) {
