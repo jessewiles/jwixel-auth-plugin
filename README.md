@@ -41,6 +41,9 @@ Not authorized%
 [2019-10-11T11:57:17,579][WARN ][i.j.e.a.BasicAuthHandler ] [0_YCYd2] You're a jwixel; do what you want...
 ```
 
+The logic for handling requests is encapsulated here:
+https://github.com/jwixel-io/jwixel-auth-plugin/blob/master/src/main/java/io/jwixel/esplugins/auth/BasicAuthHandler.java#L22-L58
+
 ## Building
 
 ```
