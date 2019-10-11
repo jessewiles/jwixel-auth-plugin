@@ -8,14 +8,19 @@ Build and run the docker container.  It's very simple and is mostly intended as 
 starting point for building a custom Elasticsearch authentication plugin.
 
 ```bash
- $ mvn clean package
- $ docker build jwixel-io/jwixel-auth-plugin:0.1 .
- $ docker run -d --name jwixel-auth-test -p 9200:9200 jwixel-io/jwixel-auth-plugin:0.1
- $ curl localhost:9200
+$ mvn clean package
+
+$ docker build jwixel-io/jwixel-auth-plugin:0.1 .
+
+$ docker run -d --name jwixel-auth-test -p 9200:9200 jwixel-io/jwixel-auth-plugin:0.1
+
+$ curl localhost:9200
 Not authorized%
- $ curl -u billy:will localhost:9200
+
+$ curl -u billy:will localhost:9200
 Not authorized%
- $ curl -u jwixel:pass! localhost:9200
+
+$ curl -u jwixel:pass! localhost:9200
 {
   "name" : "7mDgSTs",
   "cluster_name" : "docker-cluster",
@@ -33,7 +38,8 @@ Not authorized%
   },
   "tagline" : "You Know, for Search"
 }
- $ docker logs jwixel-auth-test --tail 5
+
+$ docker logs jwixel-auth-test --tail 5
 [2019-10-11T11:56:01,670][INFO ][o.e.n.Node               ] [0_YCYd2] started
 [2019-10-11T11:56:01,696][INFO ][o.e.g.GatewayService     ] [0_YCYd2] recovered [0] indices into cluster_state
 [2019-10-11T11:56:36,779][WARN ][i.j.e.a.BasicAuthHandler ] [0_YCYd2] No auth header...
