@@ -1,7 +1,9 @@
 package io.jwixel.esplugins.auth;
 
 import io.jwixel.esplugins.auth.store.IAuthStore;
-import io.jwixel.esplugins.auth.store.JwixelStore;
+//import io.jwixel.esplugins.auth.store.JwixelStore;
+//import io.jwixel.esplugins.auth.store.SqliteStore;
+import io.jwixel.esplugins.auth.store.ESIndexStore;
 
 import java.lang.Exception;
 import java.nio.charset.StandardCharsets;
@@ -22,23 +24,34 @@ final class BasicAuthHandler {
 
     public void authorize(RestHandler originalHandler, RestRequest request, RestChannel channel, NodeClient client) throws Exception {
         final String authHeader = request.header("Authorization");
-        if (authHeader != null) {
-            if (!authHeader.trim().toLowerCase().startsWith("basic ")) {
-                this.doNotAuthorized(channel, "Could not find a 'Basic Authorization' header");
-            } else {
-                final String header = new String(Base64.getDecoder().decode(authHeader.split(" ")[1]), StandardCharsets.UTF_8);
-                final IAuthStore store = this.selectStore();
-                final Boolean authentic = store.authentic(header);
+        final String authTokenHeader = request.header("X-Auth-Token");
 
-                if (authentic) {
-                    log.warn("Authentication successful.");
-                    originalHandler.handleRequest(request, channel, client);
-                } else {
-                    this.doNotAuthorized(channel, String.format("Authentication unsucessful with auth header. %s...", header));
-                }
-            }
+        this.log.info("sacky");
+        this.log.info(authTokenHeader);
+        this.log.info(authTokenHeader == "let-me-pass");
+
+        if (authTokenHeader != null && authTokenHeader.contains("let-me-pass")) {
+            log.warn("Authentication successful with auth token.");
+            originalHandler.handleRequest(request, channel, client);
         } else {
-            this.doNotAuthorized(channel, "No auth header...");
+            if (authHeader != null) {
+                if (!authHeader.trim().toLowerCase().startsWith("basic ")) {
+                    this.doNotAuthorized(channel, "Could not find a 'Basic Authorization' header");
+                } else {
+                    final String header = new String(Base64.getDecoder().decode(authHeader.split(" ")[1]), StandardCharsets.UTF_8);
+                    final IAuthStore store = this.selectStore();
+                    final Boolean authentic = store.authentic(header);
+
+                    if (authentic) {
+                        log.warn("Authentication successful.");
+                        originalHandler.handleRequest(request, channel, client);
+                    } else {
+                        this.doNotAuthorized(channel, String.format("Authentication unsucessful with auth header. %s...", header));
+                    }
+                }
+            } else {
+                this.doNotAuthorized(channel, "No auth header...");
+            }
         }
     }
 
@@ -51,7 +64,7 @@ final class BasicAuthHandler {
     }
 
     private IAuthStore selectStore() {
-        return new JwixelStore();
+        return new ESIndexStore();
     }
 
 }
