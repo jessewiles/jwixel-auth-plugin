@@ -40,7 +40,14 @@ final class BasicAuthHandler {
                 } else {
                     final String header = new String(Base64.getDecoder().decode(authHeader.split(" ")[1]), StandardCharsets.UTF_8);
                     final IAuthStore store = this.selectStore();
-                    final Boolean authentic = store.authentic(header);
+                    boolean authentic = false;
+
+                    try {
+                        authentic = store.authentic(header);
+                    } catch (Exception e) {
+                        this.log.error("Error encountered doing authentication: {}", e);
+                        authentic = false;
+                    }
 
                     if (authentic) {
                         log.warn("Authentication successful.");

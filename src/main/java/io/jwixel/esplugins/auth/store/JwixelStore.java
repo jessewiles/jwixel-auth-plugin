@@ -7,7 +7,7 @@ public final class JwixelStore implements IAuthStore {
     protected final Logger log = LogManager.getLogger(this.getClass());
 
     @Override
-    public Boolean authentic(String auth) {
+    public Boolean authentic(String auth) throws Exception {
         int firstColonIndex = auth.indexOf(':');
         String username = null;
 

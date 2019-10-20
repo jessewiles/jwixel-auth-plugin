@@ -46,7 +46,7 @@ public final class SqliteStore implements IAuthStore {
     }
 
     @Override
-    public Boolean authentic(String auth) {
+    public Boolean authentic(String auth) throws Exception {
         String[] parts = auth.split(":");
         if (parts.length != 2) {
             this.log.error("Unable to parse username and password from auth string: ", auth);
