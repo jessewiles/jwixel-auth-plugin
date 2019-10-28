@@ -13,6 +13,12 @@ public final class SqliteStore implements IAuthStore {
     protected final Logger log = LogManager.getLogger(this.getClass());
     private static String CONNECTION_STRING = "jdbc:sqlite:/home/elasticsearch/auth.db";
 
+    /*
+     * NOTE: Committing this with auth store PR even though it isn't working atm.
+     * There are significant challenges to getting this store to sync across shardcs
+     * which may or may not be a part of the eventual implementation.  Also need to
+     * finalize permissions work.
+     * */
     public SqliteStore() {
         Connection connection = null;
 

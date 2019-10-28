@@ -8,23 +8,29 @@ Build and run the docker container.  It's very simple and is mostly intended as 
 starting point for building a custom Elasticsearch authentication plugin.
 
 ```bash
-$ mvn clean package
+# in one terminal:
+$ make stop ; make run
+...
+[2019-10-28T12:44:39,960][INFO ][o.e.p.PluginsService     ] [gYxtrWG] loaded plugin [jwixel-auth-plugin]
+[2019-10-28T12:44:48,165][INFO ][o.e.d.DiscoveryModule    ] [gYxtrWG] using discovery type [zen] and host providers [settings]
+[2019-10-28T12:44:49,437][INFO ][o.e.n.Node               ] [gYxtrWG] initialized
+[2019-10-28T12:44:49,438][INFO ][o.e.n.Node               ] [gYxtrWG] starting ...
+[2019-10-28T12:44:50,102][INFO ][o.e.t.TransportService   ] [gYxtrWG] publish_address {172.17.0.2:9300}, bound_addresses {0.0.0.0:9300}
+[2019-10-28T12:44:50,137][INFO ][o.e.b.BootstrapChecks    ] [gYxtrWG] bound or publishing to a non-loopback address, enforcing bootstrap checks
+[2019-10-28T12:44:53,325][INFO ][o.e.c.s.MasterService    ] [gYxtrWG] zen-disco-elected-as-master ([0] nodes joined), reason: new_master {gYxtrWG}{gYxtrWGgQNeR4YE5Duh9hg}{B1bMDxbHSHehTRyawgw_cA}{172.17.0.2}{172.17.0.2:9300}
+[2019-10-28T12:44:53,339][INFO ][o.e.c.s.ClusterApplierService] [gYxtrWG] new_master {gYxtrWG}{gYxtrWGgQNeR4YE5Duh9hg}{B1bMDxbHSHehTRyawgw_cA}{172.17.0.2}{172.17.0.2:9300}, reason: apply cluster state (from master [master {gYxtrWG}{gYxtrWGgQNeR4YE5Duh9hg}{B1bMDxbHSHehTRyawgw_cA}{172.17.0.2}{172.17.0.2:9300} committed version [1] source [zen-disco-elected-as-master ([0] nodes joined)]])
+[2019-10-28T12:44:53,406][INFO ][o.e.h.n.Netty4HttpServerTransport] [gYxtrWG] publish_address {172.17.0.2:9200}, bound_addresses {0.0.0.0:9200}
+[2019-10-28T12:44:53,407][INFO ][o.e.n.Node               ] [gYxtrWG] started
+...
 
-$ docker build jwixel-io/jwixel-auth-plugin:0.1 .
+-----
 
-$ docker run -d --name jwixel-auth-test -p 9200:9200 jwixel-io/jwixel-auth-plugin:0.1
-
-$ curl localhost:9200
-Not authorized%
-
-$ curl -u billy:will localhost:9200
-Not authorized%
-
-$ curl -u jwixel:pass! localhost:9200
+# in another terminal:
+$ curl -u jwixeladmin:let-me-pass localhost:9200
 {
-  "name" : "7mDgSTs",
+  "name" : "gYxtrWG",
   "cluster_name" : "docker-cluster",
-  "cluster_uuid" : "v1G4M-qFTbWuED_hZ8__Vw",
+  "cluster_uuid" : "nutkz6daSlyed-hz1bvEPg",
   "version" : {
     "number" : "6.6.2",
     "build_flavor" : "oss",
@@ -38,13 +44,8 @@ $ curl -u jwixel:pass! localhost:9200
   },
   "tagline" : "You Know, for Search"
 }
-
-$ docker logs jwixel-auth-test --tail 5
-[2019-10-11T11:56:01,670][INFO ][o.e.n.Node               ] [0_YCYd2] started
-[2019-10-11T11:56:01,696][INFO ][o.e.g.GatewayService     ] [0_YCYd2] recovered [0] indices into cluster_state
-[2019-10-11T11:56:36,779][WARN ][i.j.e.a.BasicAuthHandler ] [0_YCYd2] No auth header...
-[2019-10-11T11:57:04,143][WARN ][i.j.e.a.BasicAuthHandler ] [0_YCYd2] Unknown user: billy. Failing auth...
-[2019-10-11T11:57:17,579][WARN ][i.j.e.a.BasicAuthHandler ] [0_YCYd2] You're a jwixel; do what you want...
+$ curl -u billy:will localhost:9200
+Not authorized%
 ```
 
 The logic for handling requests is encapsulated here:

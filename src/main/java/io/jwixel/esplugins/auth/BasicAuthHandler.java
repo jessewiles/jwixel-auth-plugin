@@ -73,6 +73,8 @@ final class BasicAuthHandler {
     }
 
     private IAuthStore selectStore() throws Exception {
+        // TODO: Ultimately this will need to be a swtich based on a config setting.
+        // Hard-coding ESIndexStore for now.
         return new ESIndexStore(this.config);
     }
 
