@@ -21,17 +21,19 @@ import org.elasticsearch.rest.RestStatus;
 
 final class BasicAuthHandler {
     protected final Logger log = LogManager.getLogger(this.getClass());
+    private JwixelAuthConfig config;
+
+    public BasicAuthHandler(JwixelAuthConfig config) {
+        this.config = config;
+    }
 
     public void authorize(RestHandler originalHandler, RestRequest request, RestChannel channel, NodeClient client) throws Exception {
         final String authHeader = request.header("Authorization");
         final String authTokenHeader = request.header("X-Auth-Token");
 
-        this.log.info("sacky");
-        this.log.info(authTokenHeader);
-        this.log.info(authTokenHeader == "let-me-pass");
 
-        if (authTokenHeader != null && authTokenHeader.contains("let-me-pass")) {
-            log.warn("Authentication successful with auth token.");
+        if (authTokenHeader != null && authTokenHeader.contains(this.config.getAuthToken())) {
+            this.log.warn("Authentication successful with auth token.");
             originalHandler.handleRequest(request, channel, client);
         } else {
             if (authHeader != null) {
@@ -70,8 +72,8 @@ final class BasicAuthHandler {
         channel.sendResponse(response);
     }
 
-    private IAuthStore selectStore() {
-        return new ESIndexStore();
+    private IAuthStore selectStore() throws Exception {
+        return new ESIndexStore(this.config);
     }
 
 }
