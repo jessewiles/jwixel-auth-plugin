@@ -48,8 +48,7 @@ $ curl -u billy:will localhost:9200
 Not authorized%
 ```
 
-The logic for handling requests is encapsulated here:
-https://github.com/jwixel-io/jwixel-auth-plugin/blob/master/src/main/java/io/jwixel/esplugins/auth/BasicAuthHandler.java#L22-L58
+Initial values for user:pass and auth token are hard-coded into docker file.  Ultimately, this will be pushed into config which can be modified using a web UI.
 
 ## Building
 
