@@ -17,7 +17,7 @@
     </license>
   </licenses>
   <properties>
-    <elasticsearch.version>6.8.15</elasticsearch.version>
+    <elasticsearch.version>6.8.17</elasticsearch.version>
     <elasticsearch.plugin.classname>io.jwixel.esplugins.auth.JwixelAuthPlugin</elasticsearch.plugin.classname>
     <log4j.version>2.11.1</log4j.version>
     <maven.compiler.source>1.8</maven.compiler.source>
